@@ -1,55 +1,68 @@
-package lu.uni.moneymanager.entities;
+package lu.uni.moneymanager.jpa.entity;
 
-import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Payment implements Serializable {
+public class Payment extends AbstractEntity {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @NotNull
-    private Long bankAccountId;
-    @NotNull
     private String status;
-    @NotNull
     private String title;
-    @NotNull
     private Date date;
+    private Double amount;
+    private BankAccount bankAccount;
+
     @NotNull
-    private int amount;
-
-    // GSETTERS
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    @Column(name = "status")
+    public String getStatus() {
+        return status;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
-            return false;
-        }
-        User other = (User) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "lu.uni.moneymanager.entities.Payment[ id=" + id + " ]";
+    @NotNull
+    @Column(name = "title")
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @NotNull
+    @Column(name = "date")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @NotNull
+    @Column(name = "amount")
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    @ManyToOne
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 }

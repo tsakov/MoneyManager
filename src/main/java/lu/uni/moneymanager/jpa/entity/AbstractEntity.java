@@ -1,4 +1,4 @@
-package lu.uni2013.tp2.ejb.entity.helper;
+package lu.uni.moneymanager.jpa.entity;
 
 import javax.persistence.*;
 import java.beans.BeanInfo;
@@ -7,15 +7,15 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Date;
 
 @javax.persistence.MappedSuperclass
 public abstract class AbstractEntity {
+
+    private Long id;
+
     @Id
     @GeneratedValue
     @Column(name = "ID")
-    private java.lang.Long id;
-
     public Long getId() {
         return id;
     }
