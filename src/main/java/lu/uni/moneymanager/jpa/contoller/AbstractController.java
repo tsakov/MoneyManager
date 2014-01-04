@@ -1,23 +1,25 @@
-package lu.uni2013.tp2.jsf.bean.crud.helper;
-
-import lu.uni2013.tp2.ejb.entity.helper.AbstractDBObject;
-import lu.uni2013.tp2.ejb.facades.helper.AbstractDBObjectFacade;
+package lu.uni.moneymanager.jpa.contoller;
 
 import javax.enterprise.context.Conversation;
 import java.io.Serializable;
+import lu.uni.moneymanager.jpa.entity.AbstractEntity;
+import lu.uni.moneymanager.jpa.facade.AbstractFacade;
 
-public abstract class AbstractDBObjectCrudBean<T extends AbstractDBObject> implements Serializable {
+public abstract class AbstractController<T extends AbstractEntity> implements Serializable {
+
     public abstract Class getClazz();
 
     public abstract Conversation getConversation();
 
-    public abstract AbstractDBObjectFacade getFacade();
+    public abstract AbstractFacade getFacade();
 
     protected T editEntity;
     protected T toDeleteEntity;
 
     public String startNewEntity() {
-        if (getConversation().isTransient()) getConversation().begin();
+        if (getConversation().isTransient()) {
+            getConversation().begin();
+        }
         try {
             editEntity = (T) getClazz().newInstance();
         } catch (InstantiationException e) {
@@ -29,19 +31,25 @@ public abstract class AbstractDBObjectCrudBean<T extends AbstractDBObject> imple
     }
 
     public String startEditEntity(T editEntity) {
-        if (getConversation().isTransient()) getConversation().begin();
+        if (getConversation().isTransient()) {
+            getConversation().begin();
+        }
         this.editEntity = editEntity;
         return null;
     }
 
     public String doSaveEdit() {
         editEntity = (T) getFacade().saveOrUpdate(editEntity);
-        if (!getConversation().isTransient()) getConversation().end();
+        if (!getConversation().isTransient()) {
+            getConversation().end();
+        }
         return null;
     }
 
     public String startDelete(T editEntity) {
-        if (getConversation().isTransient()) getConversation().begin();
+        if (getConversation().isTransient()) {
+            getConversation().begin();
+        }
         this.toDeleteEntity = editEntity;
         return null;
     }
@@ -49,12 +57,16 @@ public abstract class AbstractDBObjectCrudBean<T extends AbstractDBObject> imple
     public String doDelete() {
         getFacade().delete(toDeleteEntity);
         toDeleteEntity = null;
-        if (!getConversation().isTransient()) getConversation().end();
+        if (!getConversation().isTransient()) {
+            getConversation().end();
+        }
         return null;
     }
 
     public String doCancel() {
-        if (!getConversation().isTransient()) getConversation().end();
+        if (!getConversation().isTransient()) {
+            getConversation().end();
+        }
         editEntity = null;
         toDeleteEntity = null;
         return null;
