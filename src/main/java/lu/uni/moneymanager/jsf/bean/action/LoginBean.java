@@ -36,6 +36,6 @@ public class LoginBean {
 
     public String logout() {
         sessionData.setLoggedUser(null);
-        return "/login.xhtml?faces-redirect=true";
+        return "/index.xhtml?faces-redirect=true";
     }
 }
