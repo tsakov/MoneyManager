@@ -16,7 +16,7 @@ public abstract class AbstractController<T extends AbstractEntity> implements Se
     protected T editEntity;
     protected T toDeleteEntity;
 
-    public String startNewEntity() {
+    public String startNewEntity(String outcome) {
         if (getConversation().isTransient()) {
             getConversation().begin();
         }
@@ -27,23 +27,23 @@ public abstract class AbstractController<T extends AbstractEntity> implements Se
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        return null;
+        return outcome;
     }
 
-    public String startEditEntity(T editEntity) {
+    public String startEditEntity(T editEntity, String outcome) {
         if (getConversation().isTransient()) {
             getConversation().begin();
         }
         this.editEntity = editEntity;
-        return null;
+        return outcome;
     }
 
-    public String doSaveEdit() {
+    public String doSaveEdit(String outcome) {
         editEntity = (T) getFacade().saveOrUpdate(editEntity);
         if (!getConversation().isTransient()) {
             getConversation().end();
         }
-        return null;
+        return outcome;
     }
 
     public String startDelete(T editEntity) {
@@ -63,13 +63,19 @@ public abstract class AbstractController<T extends AbstractEntity> implements Se
         return null;
     }
 
-    public String doCancel() {
+    public String delete(T editEntity, String outcome) {
+        startDelete(editEntity);
+        doDelete();
+        return outcome;
+    }
+
+    public String doCancel(String outcome) {
         if (!getConversation().isTransient()) {
             getConversation().end();
         }
         editEntity = null;
         toDeleteEntity = null;
-        return null;
+        return outcome;
     }
 
     public T getEditEntity() {

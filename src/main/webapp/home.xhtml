@@ -5,15 +5,18 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="template.xhtml">
+    <ui:composition template="/template.xhtml">
         <ui:define name="content">
             <h:form>
-                <h:commandLink value="login" action="/index.jsf?faces-redirect=true" rendered="#{not sessionData.loggedIn}"/>
                 <h:panelGroup rendered="#{sessionData.loggedIn}">
                     <h:outputLabel value="Hello, #{sessionData.loggedUser.username}"/>
 
                     <h3>Bank accounts:</h3>
-                    <h:dataTable value="#{bankAccountFacade.getAllForUser(sessionData.loggedUser)}" var="bankAccount">
+                    <h:panelGroup rendered="#{empty bankAccountFacade.getAllForUser(sessionData.loggedUser)}">
+                        <h:outputText value="(There are no bank accounts.)"/>
+                        <br/>
+                    </h:panelGroup>
+                    <h:dataTable value="#{bankAccountFacade.getAllForUser(sessionData.loggedUser)}" var="bankAccount" rendered="#{not empty bankAccountFacade.getAllForUser(sessionData.loggedUser)}">
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="Bank Name"/>
@@ -30,15 +33,14 @@
                             <f:facet name="header">
                                 <h:outputText value=""/>
                             </f:facet>
-                            <!--fix links bellow - figure out what to do after start edit/delete-->
                             <h:commandLink action="/index.xhtml" value="View payments"/>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{bankAccountController.startEditEntity(bankAccount.myClone)}" value="Edit"/>
+                            <h:commandLink action="#{bankAccountController.startEditEntity(bankAccount.myClone, '/edit/bankAccount.xhtml')}" value="Edit"/>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{bankAccountController.startDelete(bankAccount)}" value="Delete"/>
+                            <h:commandLink action="#{bankAccountController.delete(bankAccount, null)}" value="Delete"/>
                         </h:column>
                     </h:dataTable>
-                    <h:commandLink action="#{bankAccountController.startNewEntity()}" value="Create new bank account"/>
+                    <h:commandLink action="#{bankAccountController.startNewEntity('/edit/bankAccount.xhtml')}" value="Create new bank account"/>
                 </h:panelGroup>
             </h:form>
         </ui:define>

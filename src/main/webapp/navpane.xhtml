@@ -2,8 +2,10 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:link outcome="/home.xhtml" value="Home"/>
+    <br />
     <h:link outcome="/index.xhtml" value="Change password"/>
-    <br />    
+    <br />
     <h:panelGroup rendered="#{sessionData.loggedUser.adminRole}">
         <h:link outcome="/index.xhtml" value="Manage accounts"/>
         <br />

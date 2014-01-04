@@ -14,7 +14,7 @@ public abstract class AbstractFacade implements Serializable {
     }
 
     public void delete(AbstractEntity entity) {
-        em.remove(entity);
+        em.remove(em.merge(entity));
     }
 
     public AbstractEntity saveOrUpdate(AbstractEntity entity) {

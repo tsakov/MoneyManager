@@ -7,6 +7,7 @@ import javax.inject.Named;
 import lu.uni.moneymanager.jpa.entity.BankAccount;
 import lu.uni.moneymanager.jpa.facade.AbstractFacade;
 import lu.uni.moneymanager.jpa.facade.BankAccountFacade;
+import lu.uni.moneymanager.jsf.bean.model.SessionData;
 
 @Named
 @ConversationScoped
@@ -16,8 +17,8 @@ public class BankAccountController extends AbstractController<BankAccount> {
     private Conversation conversation;
     @Inject
     private BankAccountFacade facade;
-//    @Inject
-//    private SessionData sessionData;
+    @Inject
+    private SessionData sessionData;
 
     @Override
     public Class getClazz() {
@@ -35,9 +36,9 @@ public class BankAccountController extends AbstractController<BankAccount> {
     }
 
     @Override
-    public String startNewEntity() {
-        super.startNewEntity();
-//        editEntity.setUser(sessionData.getLoggedUser());
-        return null;
+    public String startNewEntity(String outcome) {
+        super.startNewEntity(null);
+        editEntity.setUser(sessionData.getLoggedUser());
+        return outcome;
     }
 }

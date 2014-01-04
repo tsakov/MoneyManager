@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h:outputText value="New bank account:"/>
+                <br/>
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Bank name:"/>
+                    <h:inputText value="#{bankAccountController.editEntity.bankName}" required="true"/>
+                    <h:outputLabel value="Account number:"/>
+                    <h:inputText value="#{bankAccountController.editEntity.accountNumber}" required="true"/>
+                </h:panelGrid>
+                <br/>
+                <h:commandLink action="#{bankAccountController.doSaveEdit('/home.xhtml')}" value="Save" />
+            </h:form>
+            <h:form>
+                <h:commandLink action="#{bankAccountController.doCancel('/home.xhtml')}" value="Cancel" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
