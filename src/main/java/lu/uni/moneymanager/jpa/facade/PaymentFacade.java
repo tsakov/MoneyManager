@@ -1,22 +1,17 @@
-package jpa.session;
+package lu.uni.moneymanager.jpa.facade;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import jpa.entities.Facultydivision;
+import javax.inject.Named;
+import java.util.List;
+import lu.uni.moneymanager.jpa.entity.BankAccount;
+import lu.uni.moneymanager.jpa.entity.Payment;
 
+@Named
 @Stateless
-public class PaymentFacade extends AbstractFacade<Payment> {
-    @PersistenceContext(unitName = "Graded2PU")
-    private EntityManager em;
+public class PaymentFacade extends AbstractFacade {
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+    public List<Payment> getAllForBankAccount(BankAccount bankAccount) {
+        return em.createQuery("from Payment p where p.bankAccount = :bankAccount", Payment.class)
+                .setParameter("bankAccount", bankAccount).getResultList();
     }
-
-    public FacultydivisionFacade() {
-        super(Facultydivision.class);
-    }
-
 }

@@ -1,32 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package jpa.session;
+package lu.uni.moneymanager.jpa.facade;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import jpa.entities.Facultydivision;
+import javax.inject.Named;
+import java.util.List;
+import lu.uni.moneymanager.jpa.entity.BankAccount;
+import lu.uni.moneymanager.jpa.entity.User;
 
-/**
- *
- * @author CHEATer
- */
+@Named
 @Stateless
-public class BankAccountFacade extends AbstractFacade<BankAccount> {
-    @PersistenceContext(unitName = "Graded2PU")
-    private EntityManager em;
+public class BankAccountFacade extends AbstractFacade {
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+    public List<BankAccount> getAllForUser(User user) {
+        return em.createQuery("SELECT ba FROM BankAccount ba where ba.user = :user", BankAccount.class)
+                .setParameter("user", user).getResultList();
     }
-
-    public FacultydivisionFacade() {
-        super(Facultydivision.class);
-    }
-
 }
