@@ -1,32 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>lu.uni2013</groupId>
-    <artifactId>tp4</artifactId>
+    <groupId>lu.uni</groupId>
+    <artifactId>MoneyManager</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
     <build>
-        <finalName>tp4</finalName>
+        <finalName>MoneyManager</finalName>
         <plugins>
-            <plugin>
-                <!--
-                No more redeployements...
-                Added JRebel support:
-                   http://zeroturnaround.com/software/jrebel/
-                   http://manuals.zeroturnaround.com/jrebel/standalone/launch-from-command-line.html#jboss-7-x
-                -->
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>jrebel-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-rebel-xml</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
@@ -44,14 +25,26 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.richfaces.core</groupId>
-            <artifactId>richfaces-core-impl</artifactId>
-            <version>4.3.4.Final</version>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>2.1.7</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.richfaces.ui</groupId>
-            <artifactId>richfaces-components-ui</artifactId>
-            <version>4.3.4.Final</version>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>2.1.7</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
         </dependency>
     </dependencies>
 </project>
