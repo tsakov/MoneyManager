@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:panelGroup rendered="#{sessionData.loggedUser.adminRole}">
+                <h:form>
+                    <h:outputText value="New user account:"/>
+                    <br/>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Username:"/>
+                        <h:inputText value="#{userController.editEntity.username}" required="true"/>
+                        <h:outputLabel value="Password:"/>
+                        <h:inputText value="#{userController.editEntity.password}" required="true"/>
+                        <h:outputLabel value="Admin role:"/>
+                        <h:selectBooleanCheckbox value="#{userController.editEntity.adminRole}"/>
+                    </h:panelGrid>
+                    <br/>
+                    <h:commandLink action="#{userController.doSaveEdit('/view/users.xhtml')}" value="Save" />
+                </h:form>
+                <h:form>
+                    <h:commandLink action="#{userController.doCancel('/view/users.xhtml')}" value="Cancel" />
+                </h:form>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

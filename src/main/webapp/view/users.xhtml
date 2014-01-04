@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h:panelGroup rendered="#{sessionData.loggedUser.adminRole}">
+                    <h3>Users:</h3>
+                    <h:panelGroup rendered="#{empty userFacade.all}">
+                        <h:outputText value="(There are no user accounts.)"/>
+                        <br/>
+                    </h:panelGroup>
+                    <h:dataTable value="#{userFacade.all}" var="user" rendered="#{not empty userFacade.all}">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Username"/>
+                            </f:facet>
+                            <h:outputText value="#{user.username}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Admin Role"/>
+                            </f:facet>
+                            <h:outputText value="#{user.adminRole}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>
+                            <h:commandLink action="#{userController.startEditEntity(user.myClone, '/edit/user.xhtml')}" value="Edit"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{userController.delete(user, null)}" value="Delete"/>
+                        </h:column>
+                    </h:dataTable>
+                    <h:commandLink action="#{userController.startNewEntity('/edit/user.xhtml')}" value="Create new user account"/>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
