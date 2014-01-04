@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+        >
+
+<ui:composition template="template.xhtml">
+    <ui:define name="content">
+        <h:commandLink value="login" action="/login.jsf?faces-redirect=true" rendered="#{not sessionData.loggedIn}"/>
+        <h:form rendered="#{sessionData.loggedIn}">
+            <h3>Comment Details</h3>
+            <h:panelGrid columns="1">
+                <h:outputLabel value="ID: #{sessionData.selectedUserComment.id}"/>
+                <h:outputLabel value="Comment: #{sessionData.selectedUserComment.comment}"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
