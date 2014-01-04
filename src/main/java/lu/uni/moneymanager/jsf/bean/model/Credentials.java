@@ -1,9 +1,10 @@
-package lu.uni2013.tp1.jsf.bean.model;
+package lu.uni.moneymanager.jsf.bean.model;
 
 import javax.enterprise.inject.Model;
 
 @Model
 public class Credentials {
+
     private String username;
     private String password;
 
