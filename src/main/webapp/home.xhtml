@@ -1,203 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:a4j="http://richfaces.org/a4j"
-        >
+      xmlns:f="http://java.sun.com/jsf/core">
 
-<ui:composition template="template.xhtml">
-    <ui:define name="content">
-        <h:form>
-            <h:commandLink value="login" action="/login.jsf?faces-redirect=true" rendered="#{not sessionData.loggedIn}"/>
-            <h:panelGroup rendered="#{sessionData.loggedIn}">
-                <h:outputLabel value="Hello #{sessionData.loggedUser.username}"/>
+    <ui:composition template="template.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h:commandLink value="login" action="/index.jsf?faces-redirect=true" rendered="#{not sessionData.loggedIn}"/>
+                <h:panelGroup rendered="#{sessionData.loggedIn}">
+                    <h:outputLabel value="Hello, #{sessionData.loggedUser.username}"/>
 
-                <h3>Comments:</h3>
-                <rich:extendedDataTable id="tblUserComment" value="#{userCommentFacade.getAllForUser(sessionData.loggedUser)}" var="userComment"
-                                        border="1" sortMode="single"
-                                        noDataLabel="No data found...">
-                    <rich:column width="50px">
-                        <f:facet name="header">
-                            <a4j:commandButton id="btAddUserComment"
-                                               image="./resources/images/add.png"
-                                               action="#{userCommentCrudBean.startNewEntity()}"
-                                               render="popupEditUserComment formPopupEditUserComment"
-                                               oncomplete="#{rich:component('popupEditUserComment')}.show();"/>
-                        </f:facet>
-                        <h:panelGrid columns="2">
-                            <a4j:commandButton id="btEditUserComment"
-                                               image="./resources/images/edit.png"
-                                               action="#{userCommentCrudBean.startEditEntity(userComment.myClone)}"
-                                               render=":popupEditUserComment :formPopupEditUserComment"
-                                               oncomplete="#{rich:component(':popupEditUserComment')}.show();"/>
-                            <a4j:commandButton id="btDeleteUserComment"
-                                               styleClass="imageLink"
-                                               image="./resources/images/delete.png"
-                                               action="#{userCommentCrudBean.startDelete(userComment)}"
-                                               render=":popupDeleteUserComment :formPopupDeleteUserComment"
-                                               oncomplete="#{rich:component('popupDeleteUserComment')}.show();"/>
-                        </h:panelGrid>
-                    </rich:column>
-                    <rich:column sortBy="#{userComment.comment}">
-                        <f:facet name="header">
-                        <h:outputLabel value="Comment"/>
-                        </f:facet>
-                        <h:outputText value="#{userComment.comment}"/>
-                    </rich:column>
-                    <rich:column>
-                        <h:commandLink value="Details" action="comment">
-                            <f:setPropertyActionListener value="#{userComment}" target="#{sessionData.selectedUserComment}"/>
-                        </h:commandLink>
-                    </rich:column>
-                    <f:facet name="footer">
-                        <rich:dataScroller renderIfSinglePage="false"/>
-                    </f:facet>
-                </rich:extendedDataTable>
-
-                <h3>Bookmarks:</h3>
-                <rich:extendedDataTable id="tblUserBookmark" value="#{userBookmarkFacade.getAllForUser(sessionData.loggedUser)}" var="userBookmark"
-                                        border="1" sortMode="single"
-                                        noDataLabel="No data found...">
-                    <rich:column width="50px">
-                        <f:facet name="header">
-                            <a4j:commandButton id="btAddUserBookmark"
-                                               image="./resources/images/add.png"
-                                               action="#{userBookmarkCrudBean.startNewEntity()}"
-                                               render="popupEditUserBookmark formPopupEditUserBookmark"
-                                               oncomplete="#{rich:component('popupEditUserBookmark')}.show();"/>
-                        </f:facet>
-                        <h:panelGrid columns="2">
-                            <a4j:commandButton id="btEditUserBookmark"
-                                               image="./resources/images/edit.png"
-                                               action="#{userBookmarkCrudBean.startEditEntity(userBookmark.myClone)}"
-                                               render=":popupEditUserBookmark :formPopupEditUserBookmark"
-                                               oncomplete="#{rich:component(':popupEditUserBookmark')}.show();"/>
-                            <a4j:commandButton id="btDeleteUserBookmark"
-                                               styleClass="imageLink"
-                                               image="./resources/images/delete.png"
-                                               action="#{userBookmarkCrudBean.startDelete(userBookmark)}"
-                                               render=":popupDeleteUserBookmark :formPopupDeleteUserBookmark"
-                                               oncomplete="#{rich:component('popupDeleteUserBookmark')}.show();"/>
-                        </h:panelGrid>
-                    </rich:column>
-                    <rich:column sortBy="#{userBookmark.bookmark}">
-                        <f:facet name="header">
-                            <h:outputLabel value="Bookmark"/>
-                        </f:facet>
-                        <h:outputText value="#{userBookmark.bookmark}"/>
-                    </rich:column>
-                    <rich:column sortBy="#{userBookmark.url}">
-                        <f:facet name="header">
-                            <h:outputLabel value="Url"/>
-                        </f:facet>
-                        <h:outputText value="#{userBookmark.url}"/>
-                    </rich:column>
-                    <f:facet name="footer">
-                        <rich:dataScroller renderIfSinglePage="false"/>
-                    </f:facet>
-
-                </rich:extendedDataTable>
-            </h:panelGroup>
-        </h:form>
-        <rich:popupPanel id="popupEditUserComment" modal="true" autosized="true" resizeable="false">
-            <f:facet name="header">
-                <h:outputText value="UserComments"/>
-            </f:facet>
-            <h:form id="formPopupEditUserComment">
-                <h:outputText value="Saisie de UserComment"/>
-                <br/>
-                <br/>
-                <h:panelGrid columns="3">
-                    <h:outputLabel value="Comment"/>
-                    <h:inputText id="itComment" value="#{userCommentCrudBean.editEntity.comment}" required="true" requiredMessage="Indiquez une valeur"/>
-                    <rich:message for="itComment"/>
-                </h:panelGrid>
-                <br/>
-                <br/>
-                <rich:messages id="msgPopupEditUserComment" globalOnly="true"/>
-                <a4j:commandButton value="Sauvegarder" action="#{userCommentCrudBean.doSaveEdit()}"
-                                   render="msgPopupEditUserComment :tblUserComment"
-                                   oncomplete="if(#{facesContext.maximumSeverity==null}) #{rich:component(':popupEditUserComment')}.hide(); return false;"/>
-                <a4j:commandButton value="Cancel" action="#{userCommentCrudBean.doCancel()}" immediate="true"
-                                   oncomplete="#{rich:component(':popupEditUserComment')}.hide(); return false;"/>
+                    <h3>Bank accounts:</h3>
+                    <h:dataTable value="#{bankAccountFacade.getAllForUser(sessionData.loggedUser)}" var="bankAccount">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Bank Name"/>
+                            </f:facet>
+                            <h:outputText value="#{bankAccount.bankName}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Account Number"/>
+                            </f:facet>
+                            <h:outputText value="#{bankAccount.accountNumber}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>
+                            <!--fix links bellow - figure out what to do after start edit/delete-->
+                            <h:commandLink action="/index.xhtml" value="View payments"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{bankAccountController.startEditEntity(bankAccount.myClone)}" value="Edit"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{bankAccountController.startDelete(bankAccount)}" value="Delete"/>
+                        </h:column>
+                    </h:dataTable>
+                    <h:commandLink action="#{bankAccountController.startNewEntity()}" value="Create new bank account"/>
+                </h:panelGroup>
             </h:form>
-        </rich:popupPanel>
-
-        <rich:popupPanel id="popupDeleteUserComment" modal="true" autosized="true" resizeable="false">
-            <f:facet name="header">
-                <h:outputText value="UserComments"/>
-            </f:facet>
-            <h:form id="formPopupDeleteUserComment">
-                <h:outputText value="Confirmer la suppression pour:"/>
-                <br/>
-                <br/>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Comment"/>
-                    <h:outputText value="#{userCommentCrudBean.toDeleteEntity.comment}"/>
-                </h:panelGrid>
-                <br/>
-                <a4j:commandButton value="Supprimer" action="#{userCommentCrudBean.doDelete()}"
-                                   render=":tblUserComment"
-                                   oncomplete="#{rich:component(':popupDeleteUserComment')}.hide(); return false;"/>
-                <a4j:commandButton value="Cancel" action="#{userCommentCrudBean.doCancel()}"
-                                   oncomplete="#{rich:component(':popupDeleteUserComment')}.hide(); return false;"/>
-                <rich:messages/>
-            </h:form>
-        </rich:popupPanel>
-
-        <rich:popupPanel id="popupEditUserBookmark" modal="true" autosized="true" resizeable="false">
-            <f:facet name="header">
-                <h:outputText value="UserBookmarks"/>
-            </f:facet>
-            <h:form id="formPopupEditUserBookmark">
-                <h:outputText value="Saisie de UserBookmark"/>
-                <br/>
-                <br/>
-                <h:panelGrid columns="3">
-                    <h:outputLabel value="Bookmark"/>
-                    <h:inputText id="itBookmark" value="#{userBookmarkCrudBean.editEntity.bookmark}" required="true" requiredMessage="Indiquez un bookmark"/>
-                    <rich:message for="itBookmark"/>
-                    <h:outputLabel value="Url"/>
-                    <h:inputText id="itUrl" value="#{userBookmarkCrudBean.editEntity.url}" required="true" requiredMessage="Indiquez un url"/>
-                    <rich:message for="itUrl"/>
-                </h:panelGrid>
-                <br/>
-                <br/>
-                <rich:messages id="msgPopupEditUserBookmark" globalOnly="true"/>
-                <a4j:commandButton value="Sauvegarder" action="#{userBookmarkCrudBean.doSaveEdit()}"
-                                   render="msgPopupEditUserBookmark :tblUserBookmark"
-                                   oncomplete="if(#{facesContext.maximumSeverity==null}) #{rich:component(':popupEditUserBookmark')}.hide(); return false;"/>
-                <a4j:commandButton value="Cancel" action="#{userBookmarkCrudBean.doCancel()}" immediate="true"
-                                   oncomplete="#{rich:component(':popupEditUserBookmark')}.hide(); return false;"/>
-            </h:form>
-        </rich:popupPanel>
-
-        <rich:popupPanel id="popupDeleteUserBookmark" modal="true" autosized="true" resizeable="false">
-            <f:facet name="header">
-                <h:outputText value="UserBookmarks"/>
-            </f:facet>
-            <h:form id="formPopupDeleteUserBookmark">
-                <h:outputText value="Confirmer la suppression pour:"/>
-                <br/>
-                <br/>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Bookmark"/>
-                    <h:outputText value="#{userBookmarkCrudBean.toDeleteEntity.bookmark}"/>
-                    <h:outputLabel value="Url"/>
-                    <h:outputText value="#{userBookmarkCrudBean.toDeleteEntity.url}"/>
-                </h:panelGrid>
-                <br/>
-                <a4j:commandButton value="Supprimer" action="#{userBookmarkCrudBean.doDelete()}"
-                                   render=":tblUserBookmark"
-                                   oncomplete="#{rich:component(':popupDeleteUserBookmark')}.hide(); return false;"/>
-                <a4j:commandButton value="Cancel" action="#{userBookmarkCrudBean.doCancel()}"
-                                   oncomplete="#{rich:component(':popupDeleteUserBookmark')}.hide(); return false;"/>
-                <rich:messages/>
-            </h:form>
-        </rich:popupPanel>
-    </ui:define>
-</ui:composition>
+        </ui:define>
+    </ui:composition>
 </html>
