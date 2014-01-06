@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h:outputText value="Payment:"/>
+                <br/>
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Status:"/>
+                    <h:selectOneMenu value="#{paymentController.editEntity.status}">
+                        <f:selectItem itemValue="incoming"/>
+                        <f:selectItem itemValue="outgoing"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Title:"/>
+                    <h:inputText value="#{paymentController.editEntity.title}" required="true"/>
+                    <h:outputLabel value="Date (d-M-yyyy):"/>
+                    <h:inputText value="#{paymentController.editEntity.date}" required="true">
+                        <f:convertDateTime pattern="d-M-yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="Amount:"/>
+                    <h:inputText value="#{paymentController.editEntity.amount}" required="true"/>
+                </h:panelGrid>
+                <br/>
+                <h:commandLink action="#{paymentController.doSaveEdit('/view/payments.xhtml')}" value="Save" />
+            </h:form>
+            <h:form>
+                <h:commandLink action="#{paymentController.doCancel('/view/payments.xhtml')}" value="Cancel" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

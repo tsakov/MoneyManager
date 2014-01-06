@@ -33,7 +33,7 @@
                             <f:facet name="header">
                                 <h:outputText value=""/>
                             </f:facet>
-                            <h:commandLink action="/index.xhtml" value="View payments"/>
+                            <h:commandLink action="#{bankAccountController.viewPayments(bankAccount, '/view/payments.xhtml')}" value="View payments"/>
                             <h:outputText value=" "/>
                             <h:commandLink action="#{bankAccountController.startEditEntity(bankAccount.myClone, '/edit/bankAccount.xhtml')}" value="Edit"/>
                             <h:outputText value=" "/>

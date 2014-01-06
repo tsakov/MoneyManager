@@ -41,4 +41,9 @@ public class BankAccountController extends AbstractController<BankAccount> {
         editEntity.setUser(sessionData.getLoggedUser());
         return outcome;
     }
+
+    public String viewPayments(BankAccount bankAccount, String outcome) {
+        sessionData.setSelectedBankAccount(bankAccount);
+        return outcome;
+    }
 }

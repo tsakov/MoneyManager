@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h3>
+                    <h:outputText value="Payments for account #{sessionData.selectedBankAccount.accountNumber} (#{sessionData.selectedBankAccount.bankName})"/>
+                </h3>
+                <h:panelGroup rendered="#{empty paymentFacade.getAllForBankAccount(sessionData.selectedBankAccount)}">
+                    <h:outputText value="(There are no payments for this accounts.)"/>
+                    <br/>
+                </h:panelGroup>
+                <h:dataTable value="#{paymentFacade.getAllForBankAccount(sessionData.selectedBankAccount)}" var="payment" rendered="#{not empty paymentFacade.getAllForBankAccount(sessionData.selectedBankAccount)}">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
+                        <h:outputText value="#{payment.status}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Title"/>
+                        </f:facet>
+                        <h:outputText value="#{payment.title}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Date"/>
+                        </f:facet>
+                        <h:outputText value="#{payment.date}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Amount"/>
+                        </f:facet>
+                        <h:outputText value="#{payment.amount}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value=""/>
+                        </f:facet>
+                        <h:commandLink action="#{paymentController.startEditEntity(payment.myClone, '/edit/payment.xhtml')}" value="Edit"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{paymentController.delete(payment, null)}" value="Delete"/>
+                    </h:column>
+                </h:dataTable>
+                <h:commandLink action="#{paymentController.startNewEntity('/edit/payment.xhtml')}" value="Create new payment"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
